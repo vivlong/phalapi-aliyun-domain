@@ -21,5 +21,8 @@
 		"psr-4": {
 			"PhalApi\\AliyunDomain\\": "src"
 		}
+	},
+	"config": {
+		"optimize-autoloader": true
 	}
 }
