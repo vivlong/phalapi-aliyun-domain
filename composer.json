@@ -1,0 +1,25 @@
+{
+	"name": "vivlong/phalapi-aliyun-domain",
+	"description": "PhalApi 2.x 扩展类库：基于Aliyun的Domain扩展",
+	"type": "library",
+	"keywords": [
+		"phalapi", "phalapi-aliyun-domain", "domain"
+	],
+	"license": "GPL-3.0+",
+	"minimum-stability": "dev",
+	"homepage": "https://www.phalapi.net/",
+	"authors": [{
+		"name": "vivlong",
+		"email": "vivlonglz@gmail.com",
+		"homepage": "http://vivlong.github.io",
+		"role": "Developer"
+	}],
+	"require": {
+		"alibabacloud/sdk": "^1.5"
+	},
+	"autoload": {
+		"psr-4": {
+			"PhalApi\\AliyunDomain\\": "src"
+		}
+	}
+}
