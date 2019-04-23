@@ -8,6 +8,11 @@ PhalApi 2.x扩展类库，基于Aliyun的Domain扩展。
 ```
 然后执行```composer update```。  
 
+或者执行  
+```
+    composer require vivlong/phalapi-aliyun-domain
+```  
+
 安装成功后，添加以下配置到/path/to/phalapi/config/app.php文件：  
 ```php
     /**

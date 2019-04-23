@@ -12,10 +12,13 @@ class Lite {
 	public function __construct($config = NULL) {
 		$this->config = $config;
 		if ($this->config === NULL) {
-			$this->config = DI()->config->get('app.AliyunDomain');
+			$this->config = \PhalApi\DI()->config->get('app.AliyunDomain');
 		}
 		AlibabaCloud::accessKeyClient($this->config['accessKeyId'], $this->config['accessKeySecret'])
-			->regionId('cn-hangzhou')
+			->regionId('cn-hangzhou') 	// 设置客户端区域，使用该客户端且没有单独设置的请求都使用此设置
+			->timeout(10) 							// 超时10秒，使用该客户端且没有单独设置的请求都使用此设置
+			->connectTimeout(10) 				// 连接超时10秒，当单位小于1，则自动转换为毫秒，使用该客户端且没有单独设置的请求都使用此设置
+			//->debug(true) 						// 开启调试，CLI下会输出详细信息，使用该客户端且没有单独设置的请求都使用此设置
 			->asDefaultClient();
 	}
 
@@ -87,8 +90,8 @@ class Lite {
 			} else {
 				$rs = $this->rpcRequest('AddDomainRecord', [
 					'DomainName' => $domainName,
-					'RR' => $rr,
 					'Type' => 'A',
+					'RR' => $rr,
 					'Value' => $ip,
 				]);
 				return $rs;
@@ -108,13 +111,17 @@ class Lite {
 					'query' => $params
 				])
 				->request();
-			return $result;
+			if($result->isSuccess()) {
+				return $result->toArray();
+			} else {
+				return $result;
+			}
 		} catch (ClientException $e) {
 			\PhalApi\DI()->logger->error($e->getErrorMessage());
-			return null;
+			return $e->getErrorMessage();
 		} catch (ServerException $e) {
 			\PhalApi\DI()->logger->error($e->getErrorMessage());
-			return null;
+			return $e->getErrorMessage();
 		}
 	}
 
