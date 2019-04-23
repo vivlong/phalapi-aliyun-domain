@@ -7,14 +7,11 @@ use AlibabaCloud\Client\Exception\ServerException;
 
 class Lite {
 
-	protected $config;
-
 	public function __construct($config = NULL) {
-		$this->config = $config;
-		if ($this->config === NULL) {
-			$this->config = \PhalApi\DI()->config->get('app.AliyunDomain');
+		if (is_null($config)) {
+			$config = \PhalApi\DI()->config->get('app.AliyunDomain');
 		}
-		AlibabaCloud::accessKeyClient($this->config['accessKeyId'], $this->config['accessKeySecret'])
+		AlibabaCloud::accessKeyClient($config['accessKeyId'], $config['accessKeySecret'])
 			->regionId('cn-hangzhou') 	// 设置客户端区域，使用该客户端且没有单独设置的请求都使用此设置
 			->timeout(10) 							// 超时10秒，使用该客户端且没有单独设置的请求都使用此设置
 			->connectTimeout(10) 				// 连接超时10秒，当单位小于1，则自动转换为毫秒，使用该客户端且没有单独设置的请求都使用此设置
@@ -118,10 +115,10 @@ class Lite {
 			}
 		} catch (ClientException $e) {
 			\PhalApi\DI()->logger->error($e->getErrorMessage());
-			return $e->getErrorMessage();
+			return null;
 		} catch (ServerException $e) {
 			\PhalApi\DI()->logger->error($e->getErrorMessage());
-			return $e->getErrorMessage();
+			return null;
 		}
 	}
 
